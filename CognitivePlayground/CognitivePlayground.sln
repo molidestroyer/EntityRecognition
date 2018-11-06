@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2050
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CognitivePlaygroundWeb", "..\CognitivePlaygroundWeb\CognitivePlaygroundWeb.csproj", "{DBADB8DB-0F87-4DDF-9B0A-D517F729770C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DBADB8DB-0F87-4DDF-9B0A-D517F729770C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBADB8DB-0F87-4DDF-9B0A-D517F729770C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBADB8DB-0F87-4DDF-9B0A-D517F729770C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBADB8DB-0F87-4DDF-9B0A-D517F729770C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C1F86E87-A62C-49CD-9135-A85E55C59867}
+	EndGlobalSection
+EndGlobal
