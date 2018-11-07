@@ -1,16 +1,45 @@
 ﻿@page "/counter"
+@inject HttpClient Http
+@using Microsoft.Azure.CognitiveServices.Language.TextAnalytics.Models
+@using CognitivePlayground.Shared
 
-<h1>Counter</h1>
+<h1>Enter your not intelligent text to extract all the info</h1>
 
-<p>Current count: @currentCount</p>
+@*<p>Current count: @currentCount</p>*@
 
-<button class="btn btn-primary" onclick="@IncrementCount">Click me</button>
+<div class="form-group">
+    <h6>Text language</h6>
+    <select class="form-control" bind="@_language">
+        @foreach (var language in _languages)
+        {
+            <option value=@language>@language</option>
+        }
+    </select>
+    <textarea bind="@_text" class="form-control" rows="5" id="comment"></textarea>
+    <button class="btn btn-primary" onclick="@GetEntityLinkingResult">Get text analytics results</button>
+
+    @foreach (var result in _resultEntities)
+    {
+        <h6>@result.Name @result.Type @result.SubType</h6>
+    }
+</div>
 
 @functions {
-    int currentCount = 0;
+    public string _language { get; set; } = "en";
+    public string _text { get; set; } = "";
 
-    void IncrementCount()
+    public EntityRecordV2dot1[] _resultEntities { get; set; } = new EntityRecordV2dot1[0];
+
+    public List<string> _languages { get; set; } = new List<string>
+{
+"en",
+"es",
+"it"
+};
+
+    async void GetEntityLinkingResult()
     {
-        currentCount++;
+        _resultEntities = await Http.PostJsonAsync<EntityRecordV2dot1[]>("api/SampleData/GetEntityLinkTextAnalytics", new EntityLinkingRequest() { Language = _language, Text = _text });
+        this.StateHasChanged();
     }
 }

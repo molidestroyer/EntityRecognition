@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Blazor.Server;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.Azure.CognitiveServices.Language.TextAnalytics;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 using System.Linq;
@@ -16,6 +17,11 @@ namespace CognitivePlayground.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.AddSingleton<ITextAnalyticsClient>((t) => new TextAnalyticsClient(new ApiKeyServiceClientCredentials())
+            {
+                Endpoint = "https://westeurope.api.cognitive.microsoft.com"
+            });
 
             services.AddResponseCompression(options =>
             {
