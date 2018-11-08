@@ -7,6 +7,10 @@ namespace CognitivePlayground.Shared
     {
         public IEnumerable<EntityRecord> EntityRecords { get; set; } = new List<EntityRecord>();
         public DetectedLanguage DetectedLanguage { get; set; }
+        public SentimentBatchResult SentimentBatchResult { get; set; } = new SentimentBatchResult();
+        public KeyPhraseBatchResult KeyPhraseBatchResult { get; set; } = new KeyPhraseBatchResult();
+
+
 
     }
 }

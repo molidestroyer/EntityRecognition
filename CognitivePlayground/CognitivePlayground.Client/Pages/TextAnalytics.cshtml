@@ -1,6 +1,5 @@
 ﻿@page "/textanalytics"
 @inherits TextAnalyticsModel
-
 @*<p>Current count: @currentCount</p>*@
 
 <div class="form-group">
@@ -9,18 +8,55 @@
         <SurveyPrompt Title="Tip! Enter a text on any language and it will be detected and all entities will be analysed by MS Cognitive services" />
         <textarea bind="@_text" class="form-control" rows="5"></textarea>
         <button class="btn btn-primary mt-2" onclick="@GetEntityLinkingResult">Get text analytics results</button>
+        @if (_loading)
+        {
+            <div class="container">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                        <span>Please wait<span class="dotdotdot"></span></span>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 
     <div class="row mt-2">
         @if (_resultEntities.DetectedLanguage != null)
         {
-            <h6>Detected language @_resultEntities.DetectedLanguage.Name with probability of @_resultEntities.DetectedLanguage.Score </h6>
+            <div class="col-12">
+                <div class="alert alert-info" role="alert">
+                    Detected language @_resultEntities.DetectedLanguage.Name with probability of @{string.Format("{0:P2}.", _resultEntities.DetectedLanguage.Score.Value);} %
+                </div>
+            </div>
+
         }
-        <div class="card-columns">
+
+        <div class="col-12">
+            <div id="cloud"></div>
+        </div>
+
+        <div class="col-12 card-columns">
             @foreach (var result in _resultEntities.EntityRecords)
             {
                 <CardEntityComponent EntityRecord="@result"></CardEntityComponent>
             }
+
+            @*@{ if (_resultEntities.KeyPhraseBatchResult.Documents != null)
+                    {
+                        foreach (var result in _resultEntities.KeyPhraseBatchResult.Documents[0]?.KeyPhrases)
+                        {
+                            <ul>
+                                <li>@result</li>
+                            </ul>
+                        }
+                    }
+                }*@
+            @{ if (_resultEntities.SentimentBatchResult.Documents != null)
+                {
+                    <h6>Sentiment score @_resultEntities.SentimentBatchResult.Documents[0]?.Score </h6>
+                }
+            }
+
         </div>
     </div>
 
@@ -28,3 +64,5 @@
         <h6> Sources Obama speech : <a href="https://www.americanrhetoric.com/speeches/barackobama/barackobamasenatespeechoncorettascottkingpassing.htm">www.americanrhetoric.com</a> </h6>
     </div>
 </div>
+
+

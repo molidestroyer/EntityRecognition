@@ -51,44 +51,76 @@ namespace CognitivePlayground.Server.Controllers
 
                 if (resultLanguage != null && resultLanguage.Documents.Any())
                 {
-                    EntitiesBatchResultV2dot1 result4 = DetectLanguage(request, response, resultLanguage);
-
+                    SetLanguage(response, resultLanguage);
+                    GetEntitiesAnalisys(request, response, resultLanguage);
                     // TODO use automapper
-                    Map(response, result4);
-
-                    var imageAddedCollection = response.EntityRecords.Select(t =>
-                    {
-                        if (!string.IsNullOrEmpty(t.WikipediaId))
-                        {
-                            var mediawiki = new Mediawiki(response.DetectedLanguage.Iso6391Name);
-
-                            var images = mediawiki.GetImagesURLAsync(t.WikipediaId).Result;
-                            if (images.Any())
-                            {
-                                var excludedList = new List<string> { "Padlock", "Search", "ogg" };
-                                t.WikipediaImageUrl = images.FirstOrDefault(x => !excludedList.Any(e => x.URL.Contains(e)))?.URL;
-                            }
-                        }
-                        return t;
-                    });
-                    response.EntityRecords = imageAddedCollection;
+                    AddWikipediaPicture(response);
+                    GetSentimentAnalysis(request, response);
+                    GetKeyPhaseAnalysis(request, response);
                 }
             }
 
             return response;
         }
 
-        private EntitiesBatchResultV2dot1 DetectLanguage(EntityLinkingRequest request, EntityLinkingResponse response, LanguageBatchResult resultLanguage)
+        private static void SetLanguage(EntityLinkingResponse response, LanguageBatchResult resultLanguage)
         {
             var maxScore = resultLanguage.Documents[0].DetectedLanguages.Max(y => y.Score);
             response.DetectedLanguage = resultLanguage.Documents[0].DetectedLanguages.FirstOrDefault(x => x.Score == maxScore);
+        }
 
+        private void GetKeyPhaseAnalysis(EntityLinkingRequest request, EntityLinkingResponse response)
+        {
+            KeyPhraseBatchResult result2 = _textAnalyticsClient.KeyPhrasesAsync(new MultiLanguageBatchInput(
+                                   new List<MultiLanguageInput>()
+                                   {
+                          new MultiLanguageInput(response.DetectedLanguage.Iso6391Name, "0", request.Text),
+                                   })).Result;
+            response.KeyPhraseBatchResult = result2;
+        }
+
+        private void GetSentimentAnalysis(EntityLinkingRequest request, EntityLinkingResponse response)
+        {
+            SentimentBatchResult result3 = _textAnalyticsClient.SentimentAsync(
+                                   new MultiLanguageBatchInput(
+                                       new List<MultiLanguageInput>()
+                                       {
+                              new MultiLanguageInput(response.DetectedLanguage.Iso6391Name, "0", request.Text),
+                                       })).Result;
+            response.SentimentBatchResult = result3;
+        }
+
+        private static void AddWikipediaPicture(EntityLinkingResponse response)
+        {
+            var imageAddedCollection = response.EntityRecords.Select(t =>
+            {
+                if (!string.IsNullOrEmpty(t.WikipediaId))
+                {
+                    var mediawiki = new Mediawiki(response.DetectedLanguage.Iso6391Name);
+
+                    var images = mediawiki.GetImagesURLAsync(t.WikipediaId).Result;
+                    if (images.Any())
+                    {
+                        var excludedList = new List<string> { "Padlock", "Search", "ogg" };
+                        t.WikipediaImageUrl = images.FirstOrDefault(x => !excludedList.Any(e => x.URL.Contains(e)))?.URL;
+                    }
+                }
+                return t;
+            });
+            response.EntityRecords = imageAddedCollection;
+        }
+
+        private EntitiesBatchResultV2dot1 GetEntitiesAnalisys(EntityLinkingRequest request, EntityLinkingResponse response, LanguageBatchResult resultLanguage)
+        {
             var result4 = _textAnalyticsClient.EntitiesAsync(
                 new MultiLanguageBatchInput(
                     new List<MultiLanguageInput>()
                     {
                           new MultiLanguageInput(response.DetectedLanguage.Iso6391Name, "0", request.Text)
                     })).Result;
+
+            Map(response, result4);
+
             return result4;
         }
 
