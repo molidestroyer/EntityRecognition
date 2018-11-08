@@ -38,16 +38,36 @@ namespace CognitivePlayground.Server.Controllers
         }
 
         [HttpPost("[action]")]
-        public IEnumerable<EntityRecordV2dot1> GetEntityLinkTextAnalytics([FromBody] EntityLinkingRequest request)
+        public EntityLinkingResponse GetEntityLinkTextAnalytics([FromBody] EntityLinkingRequest request)
         {
-            var result4 = _textAnalyticsClient.EntitiesAsync(
-                    new MultiLanguageBatchInput(
-                        new List<MultiLanguageInput>()
-                        {
-                          new MultiLanguageInput(request.Language, "0", request.Text)
-                        })).Result;
-            
-            return result4.Documents[0].Entities;
+            var response = new EntityLinkingResponse();
+            if (!string.IsNullOrEmpty(request.Text))
+            {
+                var resultLanguage = _textAnalyticsClient.DetectLanguageAsync(new BatchInput(
+                       new List<Input>()
+                           {
+                          new Input("1", request.Text),
+                       })).Result;
+
+                if (resultLanguage != null && resultLanguage.Documents.Any())
+                {
+                    var maxScore = resultLanguage.Documents[0].DetectedLanguages.Max(y => y.Score);
+                    response.DetectedLanguage = resultLanguage.Documents[0].DetectedLanguages.FirstOrDefault(x => x.Score == maxScore);
+
+                    var result4 = _textAnalyticsClient.EntitiesAsync(
+                        new MultiLanguageBatchInput(
+                            new List<MultiLanguageInput>()
+                            {
+                          new MultiLanguageInput(response.DetectedLanguage.Iso6391Name, "0", request.Text)
+                            })).Result;
+
+                    response.EntityRecords = result4.Documents[0].Entities;
+                }
+
+
+            }
+
+            return response;
         }
     }
 }

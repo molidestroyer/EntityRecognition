@@ -6,19 +6,25 @@
 @*<p>Current count: @currentCount</p>*@
 
 <div class="form-group">
-    <h6>Text language</h6>
-    <select class="form-control" bind="@_language">
-        @foreach (var language in _languages)
-        {
-            <option value=@language>@language</option>
-        }
-    </select>
+    @*<h6>Text language</h6>
+        <select class="form-control" bind="@_language">
+            @foreach (var language in _languages)
+            {
+                <option value=@language>@language</option>
+            }
+        </select>*@
     <textarea bind="@_text" class="form-control" rows="5" id="comment"></textarea>
     <button class="btn btn-primary" onclick="@GetEntityLinkingResult">Get text analytics results</button>
 
-    @foreach (var result in _resultEntities)
-    {
-        <h6>@result.Name @result.Type @result.SubType</h6>
-    }
+    <div class="container-fluid">
+        <div class="row">
+            @*<h6>Detected language @_resultEntities.DetectedLanguage.Name with probability of @_resultEntities.DetectedLanguage.Score </h6>*@
+        </div>
+        <div class="row">
+            @foreach (var result in _resultEntities.EntityRecords)
+            {
+                <CardEntityComponent EntityRecord="@result"></CardEntityComponent>
+            }
+        </div>
+    </div>
 </div>
-

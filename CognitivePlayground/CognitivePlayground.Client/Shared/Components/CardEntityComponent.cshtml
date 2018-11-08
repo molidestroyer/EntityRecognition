@@ -1,0 +1,16 @@
+﻿@inherits CardEntityComponentModel
+
+<div class="wrimagecard wrimagecard-topimage">
+    <a href="@EntityRecord.WikipediaUrl" >
+        <div class="wrimagecard-topimage_header" style="background-color:@Color ">
+            <center><i class="@Icon" style="color:@IconColor"></i></center>
+            <center><h6 style="color:@IconColor">@EntityRecord.Type</h6></center>
+            <center><h6 style="color:@IconColor">@EntityRecord.SubType</h6></center>
+        </div>
+        <div class="wrimagecard-topimage_title">
+            <h4>
+                @EntityRecord.Name
+            </h4>
+        </div>
+    </a>
+</div>

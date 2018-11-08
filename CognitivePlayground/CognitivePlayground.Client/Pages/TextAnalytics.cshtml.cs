@@ -14,7 +14,7 @@ namespace CognitivePlayground.Client.Pages
         [Inject]
         protected HttpClient Http { get; set; }
 
-        public EntityRecordV2dot1[] _resultEntities { get; set; } = new EntityRecordV2dot1[0];
+        public EntityLinkingResponse _resultEntities { get; set; } = new EntityLinkingResponse();
 
         protected List<string> _languages { get; set; } = new List<string>
         {
@@ -25,7 +25,7 @@ namespace CognitivePlayground.Client.Pages
 
         protected async void GetEntityLinkingResult()
         {
-            _resultEntities = await Http.PostJsonAsync<EntityRecordV2dot1[]>("api/SampleData/GetEntityLinkTextAnalytics", new EntityLinkingRequest() { Language = _language, Text = _text });
+            _resultEntities = await Http.PostJsonAsync<EntityLinkingResponse>("api/SampleData/GetEntityLinkTextAnalytics", new EntityLinkingRequest() { Language = _language, Text = _text });
             this.StateHasChanged();
         }
     }
