@@ -5,7 +5,7 @@ namespace CognitivePlayground.Shared
 {
     public class EntityLinkingResponse
     {
-        public IEnumerable<EntityRecordV2dot1> EntityRecords { get; set; } = new List<EntityRecordV2dot1>();
+        public IEnumerable<EntityRecord> EntityRecords { get; set; } = new List<EntityRecord>();
         public DetectedLanguage DetectedLanguage { get; set; }
 
     }

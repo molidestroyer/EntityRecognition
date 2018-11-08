@@ -1,5 +1,5 @@
+using CognitivePlayground.Shared;
 using Microsoft.AspNetCore.Blazor.Components;
-using Microsoft.Azure.CognitiveServices.Language.TextAnalytics.Models;
 
 namespace CognitivePlayground.Client.Shared.Components
 {
@@ -7,7 +7,7 @@ namespace CognitivePlayground.Client.Shared.Components
 
     {
         [Parameter]
-        protected EntityRecordV2dot1 EntityRecord { get; set; }
+        protected EntityRecord EntityRecord { get; set; }
 
         protected string Color
         {

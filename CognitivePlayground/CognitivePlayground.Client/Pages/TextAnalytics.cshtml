@@ -1,30 +1,30 @@
 ﻿@page "/textanalytics"
 @inherits TextAnalyticsModel
 
-<h1>Enter your not intelligent text to extract all the info</h1>
-
 @*<p>Current count: @currentCount</p>*@
 
 <div class="form-group">
-    @*<h6>Text language</h6>
-        <select class="form-control" bind="@_language">
-            @foreach (var language in _languages)
-            {
-                <option value=@language>@language</option>
-            }
-        </select>*@
-    <textarea bind="@_text" class="form-control" rows="5" id="comment"></textarea>
-    <button class="btn btn-primary" onclick="@GetEntityLinkingResult">Get text analytics results</button>
+    <div class="row">
+        <h1>Enter your not intelligent text to extract all the info</h1>
+        <SurveyPrompt Title="Tip! Enter a text on any language and it will be detected and all entities will be analysed by MS Cognitive services" />
+        <textarea bind="@_text" class="form-control" rows="5"></textarea>
+        <button class="btn btn-primary mt-2" onclick="@GetEntityLinkingResult">Get text analytics results</button>
+    </div>
 
-    <div class="container-fluid">
-        <div class="row">
-            @*<h6>Detected language @_resultEntities.DetectedLanguage.Name with probability of @_resultEntities.DetectedLanguage.Score </h6>*@
-        </div>
-        <div class="row">
+    <div class="row mt-2">
+        @if (_resultEntities.DetectedLanguage != null)
+        {
+            <h6>Detected language @_resultEntities.DetectedLanguage.Name with probability of @_resultEntities.DetectedLanguage.Score </h6>
+        }
+        <div class="card-columns">
             @foreach (var result in _resultEntities.EntityRecords)
             {
                 <CardEntityComponent EntityRecord="@result"></CardEntityComponent>
             }
         </div>
+    </div>
+
+    <div class="row mt-2">
+        <h6> Sources Obama speech : <a href="https://www.americanrhetoric.com/speeches/barackobama/barackobamasenatespeechoncorettascottkingpassing.htm">www.americanrhetoric.com</a> </h6>
     </div>
 </div>
