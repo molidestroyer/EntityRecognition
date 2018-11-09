@@ -161,6 +161,10 @@ app {
     }
 }
 
+.jqcloud {
+    margin: 0 auto;
+}
+
 /* Cards */
 .wrimagecard {
     margin-top: 0;
@@ -172,7 +176,6 @@ app {
     border-radius: 4px;
     transition: all 0.3s ease;
 }
-
 
 .wrimagecard .fa {
     position: relative;
