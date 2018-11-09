@@ -22,11 +22,10 @@ namespace CognitivePlayground.Client.Pages
         {
             _loading = true;
             _resultEntities = await Http.PostJsonAsync<EntityLinkingResponse>("api/SampleData/GetEntityLinkTextAnalytics", new EntityLinkingRequest() { Text = _text });
-            await this.GenerateWordCloud();
             _loading = false;
             _dataLoaded = true;
             this.StateHasChanged();
-
+            await this.GenerateWordCloud();
         }
 
         private async Task GenerateWordCloud()

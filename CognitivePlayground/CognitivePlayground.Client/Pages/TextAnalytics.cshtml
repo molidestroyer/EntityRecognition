@@ -20,7 +20,7 @@
         }
     </div>
 
-    <div class="row mt-2" hidden="@(!_dataLoaded)">
+    <div class="row mt-5" hidden="@(!_dataLoaded)">
         @if (_resultEntities.DetectedLanguage != null)
         {
             <div class="col-12 alert alert-info mt-4" role="alert" sy>
@@ -28,10 +28,10 @@
             </div>
         }
 
-        <div class="col-12 mt-3">
+        <div class="col-12 mt-5">
             @{ if (_resultEntities.SentimentBatchResult.Documents != null)
                 {
-                    <h3 class="jumbotron-heading">SENTIMENT SCORE</h3>
+                    <h3 class="jumbotron-heading text-center">SENTIMENT SCORE</h3>
                     <div class="progress">
                         <div class="progress-bar" role="progressbar" style="width: @((_resultEntities.SentimentBatchResult.Documents[0]?.Score * 100))%;" aria-valuenow="@((_resultEntities.SentimentBatchResult.Documents[0]?.Score))" aria-valuemin="0" aria-valuemax="1">@((string.Format("{0:P2}.", _resultEntities.SentimentBatchResult.Documents[0]?.Score)))</div>
                     </div>
@@ -45,7 +45,7 @@
                 {
                     if (_resultEntities.KeyPhraseBatchResult.Documents[0].KeyPhrases.Any())
                     {
-                        <section class="col-12 jumbotron text-center mt-3">
+                        <section class="col-12 text-center mt-5">
                             <div class="container">
                                 <h3 class="jumbotron-heading">KEY PHRASES</h3>
                                 <div id="cloud" style="width: 100%;"></div>
